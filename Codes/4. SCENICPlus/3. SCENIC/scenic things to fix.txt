@@ -1,0 +1,152 @@
+0. Matching cluster names (variable identifer) between RNA and ATAC
+ 
+Both Object@meta.data$Clusters in RNA and ATAC needs to match
+
+1. For RNA, simplify Clusters
+
+library(stringr)
+# Consolidate all 'Prethalamus_' types to 'Prethalamus'
+seurat_obj@meta.data$Cluster_Pass2 <- str_replace(seurat_obj@meta.data$Cluster_Pass2, "Prethalamus.+", "Prethalamus")
+
+# Consolidate all 'PVH_SON_' types to 'PVH_SON'
+seurat_obj@meta.data$Cluster_Pass2 <- str_replace(seurat_obj@meta.data$Cluster_Pass2, "PVH_SON.+", "PVH_SON")
+
+2. For mutant, make another meta.data section combining clustes and genotype
+TK81$Clusters <- paste(TK81$orig.ident, TK81$high.tss, sep = "_")
+
+
+3. Cluster names should not have Remove parentheses, spaces, commas, underscores, and hyphens.
+
+seurat_obj@meta.data$Cluster_Pass2 <- gsub("[() ,_-]", "", seurat_obj@meta.data$Cluster_Pass2)
+
+#Clusters will be like 
+NPC                 2193
+Prethalamus         1560
+SMN                 1143
+NeuralProNeurog2    1061
+NeuralPro            863
+PVHSON               750
+NeuralProAscl1       545
+MMN                  495
+PMN                  341
+TuberalARCVMH        322
+AntIDIDTT            249
+LHPmch                35
+
+#For doing on PYthon
+
+A. RNA CHANGE CLUSTER PASS AND MATCH TO ATAC
+
+import scanpy as sc
+import pandas as pd
+
+adata = sc.read_h5ad("/faststorage/project/Hypothalamus/SCENIC/RNA/OUTPUT/DLX/CTRL_DLX.h5ad")
+
+adata.obs['Cluster_Pass2'] = (
+    adata.obs['Cluster_Pass2']
+    .str.replace(r'\(', '', regex=True)
+    .str.replace(r'\)', '', regex=True)
+    .str.replace(r' ', '_', regex=True)
+    .str.replace(r',', '', regex=True)
+)
+
+adata.obs['Cluster_Pass2'] = (
+    adata.obs['Cluster_Pass2']
+    .str.replace(r'Prethalamus_.+', 'Prethalamus', regex=True)  # Consolidate all 'Prethalamus_' types
+    .str.replace(r'PVH_SON_.+', 'PVH_SON', regex=True)          # Consolidate all 'PVH_SON_' types
+)
+
+adata.obs['Cluster_Pass2'] = (
+    adata.obs['Cluster_Pass2']
+    .str.replace(r'_', '', regex=True) 
+    .str.replace(r'-', '', regex=True)
+)
+
+
+# Count the occurrences of each unique value/group
+group_counts = adata.obs['Cluster_Pass2'].value_counts()
+
+# Print or inspect the group counts
+print(group_counts)
+>>> print(group_counts)
+NPC                 2193
+Prethalamus         1560
+SMN                 1143
+NeuralProNeurog2    1061
+NeuralPro            863
+PVHSON               750
+NeuralProAscl1       545
+MMN                  495
+PMN                  341
+TuberalARCVMH        322
+AntIDIDTT            249
+LHPmch                35
+
+
+B. ATAC CHANGE CLUSTER PASS - no _ or - space whatsover, the varaible name also has to exact match between rna, atac and all output
+
+import os
+import pickle
+
+out_dir =  "/faststorage/project/Hypothalamus/SCENIC/ATAC/OUTPUT/DLX/CTRL_DLX_outs/"
+with open(os.path.join(out_dir, "CTRL_DLX_obj.pkl"), "rb") as file:
+    cisTopic_obj = pickle.load(file)
+
+import pandas as pd
+
+# Assume 'cisTopic_obj.cell_data' is your DataFrame
+
+cisTopic_obj.cell_data['Cluster_Pass2'] = (
+		cisTopic_obj.cell_data['Cluster_Pass2']
+		.str.replace(r'\(', '', regex=True)  # Replace open parentheses
+		.str.replace(r'\)', '', regex=True)  # Replace close parentheses
+		.str.replace(r' ', '_', regex=True)  # Replace spaces with underscores
+		.str.replace(r',', '', regex=True)   # Remove commas
+        .str.replace(r'_', '', regex=True)  # Remove underscores
+        .str.replace(r'-', '', regex=True)  # Remove hyphens
+)
+
+new_summary = cisTopic_obj.cell_data['Cluster_Pass2'].value_counts()
+print(new_summary)
+pickle.dump(cisTopic_obj, open(os.path.join(out_dir, "CTRL_DLX_obj2.pkl"), "wb"))
+
+
+4. manually download genome annotation and chromosome sizes.
+
+* GENE ANNOTATION
+gene_annotation = pd.read_csv('/faststorage/project/Hypothalamus/SCENIC/outs/genome_annotation.tsv', sep='\t')
+gene_annotation['Chromosome'] = 'chr' + gene_annotation['Chromosome'].astype(str)
+print(gene_annotation.head())
+# Save the modified DataFrame to a new file
+gene_annotation.to_csv('/faststorage/project/Hypothalamus/SCENIC/outs/genome_annotation_with_chr.tsv', sep='\t', index=False)
+
+* Chromosome
+do make sure 'chromosome' column in genome annotation has 'chr' included
+chromsizes_url = "https://hgdownload-test.gi.ucsc.edu/goldenPath/mm10/bigZips/mm10.chrom.sizes"
+
+5. change to cli for running SCENIC+
+
+6. Reduce metacell number to 5
+
+7. Do make sure
+
+Signac #chr14-89896606-89897308 -> cistopic #chr14:89896606-89897308
+change in the beginnign
+
+# Correctly format the region_names by replacing only the first dash after the chromosome identifier
+cisTopic_obj.region_names = pd.Index(cisTopic_obj.region_names).str.replace(r'^(chr[\dXY]+)-(\d+)-(\d+)$', r'\1:\2-\3', regex=True)
+
+# Verify the changes to region_names
+print("Updated Region names example:", cisTopic_obj.region_names[:5])
+
+# Update the region_data.index to match the format 'chr#:start-end'
+cisTopic_obj.region_data.index = cisTopic_obj.region_data.index.str.replace(r'^(chr[\dXY]+)-(\d+)-(\d+)$', r'\1:\2-\3', regex=True)
+
+# Verify the changes to the region_data index
+print("Updated Region data index example:", cisTopic_obj.region_data.index[:5])
+
+# Update the region_data.index to match the format 'chr#:start-end'
+cisTopic_obj.selected_model.topic_region.index = cisTopic_obj.selected_model.topic_region.index.str.replace(r'^(chr[\dXY]+)-(\d+)-(\d+)$', r'\1:\2-\3', regex=True)
+
+# Verify the changes to the region_data index
+print("Updated Model Region data index example:", cisTopic_obj.selected_model.topic_region.index[:5])
