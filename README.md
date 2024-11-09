@@ -6,7 +6,7 @@ HyDD2 is an integrative bioinformatics project aimed at studying gene expression
 
 This project is structured to support researchers interested in single-cell sequencing, developmental biology, and the underlying mechanisms of neurogenesis in the hypothalamus.
 
-**#Repository Structure**
+**#Repository Structure (/Codes)**
 .:
 1. scRNA/
 2. scATAC/
@@ -335,8 +335,80 @@ Deeplabcut_Processing_LargeBatch.R
 
 
 
-**#Mention RSession here**
+**RSession here**
+> sessionInfo()
+R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 20.04.6 LTS
 
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=en_US.UTF-8   
+ [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=en_US.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Europe/Copenhagen
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats4    grid      stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] BSgenome.Mmusculus.UCSC.mm10_1.4.3 BSgenome_1.71.4                    rtracklayer_1.63.3                
+ [4] BiocIO_1.13.1                      Biostrings_2.71.6                  XVector_0.43.1                    
+ [7] TFBSTools_1.41.1                   JASPAR2020_0.99.10                 presto_1.0.0                      
+[10] EnsDb.Mmusculus.v79_2.99.0         ensembldb_2.27.1                   AnnotationFilter_1.27.0           
+[13] GenomicFeatures_1.55.4             AnnotationDbi_1.65.2               Biobase_2.63.1                    
+[16] GenomicRanges_1.55.4               GenomeInfoDb_1.39.14               IRanges_2.37.1                    
+[19] S4Vectors_0.41.7                   BiocGenerics_0.49.1                Signac_1.13.0                     
+[22] pheatmap_1.0.12                    ggrepel_0.9.5                      ggraph_2.2.1                      
+[25] igraph_2.0.3                       data.table_1.15.4                  colorspace_2.1-0                  
+[28] reshape2_1.4.4                     stringr_1.5.1                      harmony_1.2.0                     
+[31] Rcpp_1.0.12                        future_1.33.2                      patchwork_1.2.0                   
+[34] ggplot2_3.5.1                      RColorBrewer_1.1-3                 Seurat_5.0.3                      
+[37] SeuratObject_5.0.1                 sp_2.1-3                           Matrix_1.7-0                      
+[40] dplyr_1.1.4                        cowplot_1.1.3                     
+
+loaded via a namespace (and not attached):
+  [1] RcppAnnoy_0.0.22            splines_4.4.0               later_1.3.2                 bitops_1.0-7               
+  [5] R.oo_1.26.0                 tibble_3.2.1                polyclip_1.10-6             DirichletMultinomial_1.45.0
+  [9] XML_3.99-0.16.1             fastDummies_1.7.3           lifecycle_1.0.4             pwalign_0.99.2             
+ [13] globals_0.16.3              lattice_0.22-6              MASS_7.3-60.2               magrittr_2.0.3             
+ [17] plotly_4.10.4               yaml_2.3.8                  httpuv_1.6.15               sctransform_0.4.1          
+ [21] spam_2.10-0                 spatstat.sparse_3.0-3       reticulate_1.36.1           CNEr_1.39.1                
+ [25] pbapply_1.7-2               DBI_1.2.2                   abind_1.4-5                 zlibbioc_1.49.3            
+ [29] Rtsne_0.17                  R.utils_2.12.3              purrr_1.0.2                 RCurl_1.98-1.14            
+ [33] pracma_2.4.4                tweenr_2.0.3                GenomeInfoDbData_1.2.12     irlba_2.3.5.1              
+ [37] listenv_0.9.1               spatstat.utils_3.0-5        seqLogo_1.69.0              goftest_1.2-3              
+ [41] RSpectra_0.16-1             annotate_1.81.2             spatstat.random_3.2-3       fitdistrplus_1.1-11        
+ [45] parallelly_1.37.1           DelayedArray_0.29.9         leiden_0.4.3.1              codetools_0.2-20           
+ [49] RcppRoll_0.3.0              ggforce_0.4.2               tidyselect_1.2.1            UCSC.utils_0.99.7          
+ [53] farver_2.1.1                viridis_0.6.5               matrixStats_1.3.0           spatstat.explore_3.2-7     
+ [57] GenomicAlignments_1.39.5    jsonlite_1.8.8              tidygraph_1.3.1             progressr_0.14.0           
+ [61] ggridges_0.5.6              survival_3.6-4              tools_4.4.0                 TFMPvalue_0.0.9            
+ [65] ica_1.0-3                   glue_1.7.0                  SparseArray_1.3.5           gridExtra_2.3              
+ [69] MatrixGenerics_1.15.1       withr_3.0.0                 fastmap_1.1.1               fansi_1.0.6                
+ [73] caTools_1.18.2              digest_0.6.35               R6_2.5.1                    mime_0.12                  
+ [77] GO.db_3.19.1                scattermore_1.2             poweRlaw_0.80.0             gtools_3.9.5               
+ [81] tensor_1.5                  spatstat.data_3.0-4         RSQLite_2.3.6               R.methodsS3_1.8.2          
+ [85] utf8_1.2.4                  tidyr_1.3.1                 generics_0.1.3              S4Arrays_1.3.7             
+ [89] graphlayouts_1.1.1          httr_1.4.7                  htmlwidgets_1.6.4           uwot_0.2.2                 
+ [93] pkgconfig_2.0.3             gtable_0.3.5                blob_1.2.4                  lmtest_0.9-40              
+ [97] htmltools_0.5.8.1           dotCall64_1.1-1             ProtGenerics_1.35.4         scales_1.3.0               
+[101] png_0.1-8                   rstudioapi_0.16.0           tzdb_0.4.0                  rjson_0.2.21               
+[105] nlme_3.1-164                curl_5.2.1                  cachem_1.0.8                zoo_1.8-12                 
+[109] KernSmooth_2.23-22          parallel_4.4.0              miniUI_0.1.1.1              restfulr_0.0.15            
+[113] pillar_1.9.0                vctrs_0.6.5                 RANN_2.6.1                  promises_1.3.0             
+[117] xtable_1.8-4                cluster_2.1.6               readr_2.1.5                 cli_3.6.2                  
+[121] compiler_4.4.0              Rsamtools_2.19.4            rlang_1.1.3                 crayon_1.5.2               
+[125] future.apply_1.11.2         plyr_1.8.9                  stringi_1.8.3               viridisLite_0.4.2          
+[129] deldir_2.0-4                BiocParallel_1.37.1         munsell_0.5.1               lazyeval_0.2.2             
+[133] spatstat.geom_3.2-9         RcppHNSW_0.6.0              hms_1.1.3                   bit64_4.0.5                
+[137] KEGGREST_1.43.1             shiny_1.8.1.1               SummarizedExperiment_1.33.3 ROCR_1.0-11                
+[141] memoise_2.0.1               fastmatch_1.1-4             bit_4.0.5   
 
 
 **Data Access
