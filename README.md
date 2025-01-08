@@ -413,10 +413,10 @@ loaded via a namespace (and not attached):
 
 **Data Access
 Raw Data (scRNA-seq)**
-NCBI GEO: Raw matrix files, including count matrices for each sample and metadata, are accessible at NCBI GEO under accession number **GSEXXXXXX.**
+NCBI GEO: Raw matrix files, including count matrices for each sample and metadata, are accessible at NCBI GEO under accession number **GSE284492.**
 
 **Processed Data (.Robj Files)**
-Figshare: Processed Seurat objects (e.g., HyDD2_Processed.Robj) can be accessed and downloaded from Figshare at **Figshare link**. These files include pre-processed and normalized data suitable for running the scripts in this repository.
+Figshare: Processed Seurat objects (e.g., HyDD2_Processed.Robj) can be accessed and downloaded from 10.5281/zenodo.14292831. These files include pre-processed and normalized data suitable for running the scripts in this repository.
 
 **Contact**
 For questions or collaboration inquiries, please contact Thomas Kim at tkim@dandrite.au.dk
